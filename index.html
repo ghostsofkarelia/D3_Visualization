@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My Visualization</title>
+    <link rel="stylesheet" href="lib/bootstrap.min.css">
+	<link rel="stylesheet" href="lib/visualization.css">	<!--bootstrap for styling-->
+</head>
+<body class="container"> <!-- content -->
+    <main id="mainDiv">
+        <h1 id="title">Proposed Expenditure for Seattle City Gov Departments</h1>
+        
+        <!-- more html content can go here -->
+		<div>
+		This data has been retrieved from Seattle Gov's open data portal. It describes the proposed expenditure of various departments and the programs
+		within those departments. The colors of the bubbles are chosen at random but the size denotes the proposed expenditure. Hover over the bubbles to
+		know more. Click to see programs within a department.
+		</div>
+
+        <div id="vis-container" class="vis-container" style="float:left;"> <!-- A container to hold the visualization -->
+        
+		</div>
+		<!--<button type="button" class="btn btn-primary btn-md" style="margin-top:1%;margin-bottom:5%;">Reset</button>-->
+        <!-- more html content can go here -->
+
+        <p id="citation" style="float:left;">Data from ...</p>
+    </main>
+	
+    
+    <script src="lib/jquery-2.2.3.js"></script> <!--jQuery-->
+    <script src="lib/d3.js"></script> <!--d3-->
+	<script src="lib/index.js"></script>	<!--your script-->
+    <script src="visualization.js"></script> <!--your script-->
+</body>
+</html>
