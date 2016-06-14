@@ -1,70 +1,29 @@
 'use strict'; //strict mode: catch silly errors
 //Saving data for global use
 var seattleGovData = [];
-var globalData = [];
 //Your code goes here!
 
 //Function to retrieve data via an ajax call
 var getData = function() {
   $.ajax({
     async: false,
-    url: 'https://data.seattle.gov/resource/i2xy-tcyk.json',
+    url: '/getData',
     success: function(data) {
-      for (var i = 0; i < data.length; i++) {
-        seattleGovData.push(data[i]);
+		seattleGovData=JSON.parse(data)
       }
-    }
   });
-}
-//Preparing data in a valid JSON format and returning the array
-var DataPrep = function() {
-  this.transformData = function() {
-    getData();
-    var expenditure = {};
-    for (var i = 0; i < seattleGovData.length; i++) {
-      var programsArray = [];
-      var deptName = seattleGovData[i]['department'];
-      var bclName = seattleGovData[i]['bcl'];
-      var programName = seattleGovData[i]['program'];
-      var proposed = parseInt(seattleGovData[i]['_2014_proposed']);
-      var endorsed = parseInt(seattleGovData[i]['_2014_endorsed']);
-      if (expenditure[deptName]) {
-        //console.log("Exists");
-        var temp = expenditure[deptName][bclName];
-        if (temp) {
-          temp.push({
-            name: programName,
-            proposed: proposed,
-            endorsed: endorsed
-          });
-        }
-      } else {
-        if (deptName != '') {
-          var bcl = {};
-          programsArray.push({
-            name: programName,
-            proposed: proposed,
-            endorsed: endorsed
-          });
-          bcl[bclName] = programsArray;
-          expenditure[deptName] = bcl;
-        }
-      }
-    }
-    //console.log(expenditure);
-    return expenditure;
-  }
 }
 
 //Preparing data for the D3 bubble charts
 var prepareData = function() {
-  globalData = new DataPrep().transformData();
+  //Call to get data on first call of render data
+  getData();
   var bubbleData = [];
-  for (var dept in globalData) {
+  for (var dept in seattleGovData) {
     var sum = 0;
     var bclString = '';
-    for (var bcl in globalData[dept]) {
-      var array = globalData[dept][bcl];
+    for (var bcl in seattleGovData[dept]) {
+      var array = seattleGovData[dept][bcl];
       bclString = bcl
       for (var i = 0; i < array.length; i++) {
         sum = sum + array[i].proposed;
@@ -90,9 +49,9 @@ var prepareData = function() {
 var prepareUpdatedData = function(department, bcl) {
   var bubbleDataNextLevel = [];
   var sum = 0;
-  for (var bclVar in globalData[department]) {
+  for (var bclVar in seattleGovData[department]) {
     //debugger;
-    var deptObj = globalData[department][bclVar];
+    var deptObj = seattleGovData[department][bclVar];
     for (var array in deptObj) {
       var name = deptObj[array].name;
       var proposed = deptObj[array].proposed;
