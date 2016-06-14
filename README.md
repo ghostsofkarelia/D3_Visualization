@@ -1,6 +1,6 @@
 ##D3 Visualization
 
-This is a simple visualization created in D3 that shows the proposed expenditure of various Seattle Gov departments. The data has been collected from Seattle Gov's open API
+This is a simple visualization created in D3 that shows the proposed expenditure of various Seattle Gov departments. The data has been collected from Seattle Gov's open API. Created wholly using JavaScript. Will upload a JavaScript (Angular) and Python based tool later on after modifications to the UI and fine tuning of the middleware architecture.
 
 [Data from Seattle Gov](https://data.seattle.gov/browse)
 

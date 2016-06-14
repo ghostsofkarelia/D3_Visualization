@@ -14,6 +14,46 @@ var getData = function() {
   });
 }
 
+//This is a class to prep data in a valid JSON format and return the list
+var DataPrep = function() {
+  this.transformData = function() {
+    getData();
+    var expenditure = {};
+    for (var i = 0; i < seattleGovData.length; i++) {
+      var programsArray = [];
+      var deptName = seattleGovData[i]['department']; //Department name
+      var bclName = seattleGovData[i]['bcl']; //Program acronym
+      var programName = seattleGovData[i]['program']; //Program full name
+      var proposed = parseInt(seattleGovData[i]['_2014_proposed']); //Proposed exp
+      var endorsed = parseInt(seattleGovData[i]['_2014_endorsed']); //Endorsed exp
+      if (expenditure[deptName]) {
+        //console.log("Exists");
+        var temp = expenditure[deptName][bclName];
+        if (temp) { //If bcl exists withing dept add a new program to the list of programs
+          temp.push({
+            name: programName,
+            proposed: proposed,
+            endorsed: endorsed
+          });
+        }
+      } else {
+        if (deptName != '') {
+          var bcl = {}; //Else create new bcl
+          programsArray.push({ //Create program object for bcl
+            name: programName,
+            proposed: proposed,
+            endorsed: endorsed
+          });
+          bcl[bclName] = programsArray; //Add list of programs to bcl object
+          expenditure[deptName] = bcl; //Add bcl to dept object
+        }
+      }
+    }
+    //console.log(expenditure);
+    return expenditure;
+  }
+}
+
 //Preparing data for the D3 bubble charts
 var prepareData = function() {
   //Call to get data on first call of render data
@@ -26,22 +66,23 @@ var prepareData = function() {
       var array = seattleGovData[dept][bcl];
       bclString = bcl
       for (var i = 0; i < array.length; i++) {
-        sum = sum + array[i].proposed;
+        sum = sum + array[i].proposed; //Calculate total exp of each bcl
       }
     }
+    //Creating a D3 bubble chart object
     if (!isNaN(sum)) {
       var bubbleObj = {};
       bubbleObj.name = dept;
       bubbleObj.className = dept.toLowerCase();
       bubbleObj.size = sum;
       bubbleObj.bcl = bclString;
-      var color = "hsl(" + Math.random() * 360 + ",100%,50%)";
+      var color = "hsl(" + Math.random() * 360 + ",100%,50%)"; //Assigning random color
       bubbleObj.color = color;
       bubbleData.push(bubbleObj);
     }
   }
   return {
-    children: bubbleData
+    children: bubbleData //return a valid D3 bubble object
   };
 }
 
@@ -79,9 +120,9 @@ var updateBubbleChart = function(department, bcl, tip) {
   $("#mainDiv").append("<button type='button'id='reset'onclick='return resetChart();' class='btn btn-primary btn-md' style='margin-top:1%;margin-bottom:2%;'>Reset Graph</button>");
   $("#mainDiv").append("<p id='citation'>Data retrieved from https://data.seattle.gov/Finance/Expenditures-dollars/frxe-s3us")
   var $title = $('#title');
-  $title.text("Proposed Expenditure for each Program within Dept.");
+  $title.text("Proposed Expenditure for each Program within Dept."); //Changing title
   d3.select("svg").remove();
-  tip.destroy();
+  tip.destroy(); //destorying higher level tooltip
   $(".d3-tip n").remove();
   var svg = d3.select('#vis-container')
     .append('svg')
@@ -98,7 +139,7 @@ var updateBubbleChart = function(department, bcl, tip) {
     .padding(1.5);
 
 
-  var nodes = bubble.nodes(prepareUpdatedData(department, bcl))
+  var nodes = bubble.nodes(prepareUpdatedData(department, bcl)) //Calling update function to show drilled down data
     .filter(function(d) {
       return !d.children;
     }); // filter out the outer bubble
@@ -130,7 +171,7 @@ var updateBubbleChart = function(department, bcl, tip) {
 	.duration(240)
 	.style('opacity', 1);
 	
-
+//Adding labels to bubbles
   visEnter.append("text")
     .attr("dy", ".3em")
     .style("text-anchor", "middle")
@@ -145,16 +186,17 @@ var updateBubbleChart = function(department, bcl, tip) {
       return d.name;
     });
 
+//Adding toolti[]
   var tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
-    .html(function(d) {
+    .html(function(d) { //Formatting tooltip
       return "<span style='color:black'>" + d.name + " has expenditure " + formatNumberAsMoney(d.size) + "</span>";
     });
 
-  svg.call(tip);
+  svg.call(tip); //Binding tip to the svg
 
-  visEnter.on('mouseover', tip.show)
+  visEnter.on('mouseover', tip.show) //Mouse events
     .on('mouseout', tip.hide)
 }
 
