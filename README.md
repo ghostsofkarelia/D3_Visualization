@@ -18,6 +18,6 @@ This is a simple visualization created in D3 that shows the proposed expenditure
 	
 	python route_functions.py
 	
-2.) Go to 
+2.) Navigate to the following url: 
 
 	http://localhost:5000/ 	
