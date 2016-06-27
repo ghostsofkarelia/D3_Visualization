@@ -16,7 +16,7 @@ This is a simple visualization created in D3 that shows the proposed expenditure
 
 1.) Run route_functions.py using command:
 	
-	python route_functions.py
+	python run.py
 	
 2.) Navigate to the following url: 
 
