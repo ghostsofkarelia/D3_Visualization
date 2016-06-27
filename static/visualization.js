@@ -9,8 +9,8 @@ var getData = function() {
     async: false,
     url: '/getData',
     success: function(data) {
-		seattleGovData=JSON.parse(data)
-      }
+      seattleGovData = JSON.parse(data)
+    }
   });
 }
 
@@ -154,9 +154,9 @@ var updateBubbleChart = function(department, bcl, tip) {
       return 'translate(' + d.x + ',' + d.y + ')';
     })
 
-	
 
-	visEnter.append('circle')
+
+  visEnter.append('circle')
     //.attr("stroke", "gray")
     .attr('r', function(d) {
       return d.r;
@@ -167,11 +167,11 @@ var updateBubbleChart = function(department, bcl, tip) {
     .style('fill', function(d) {
       return d.color;
     })
-	.transition()
-	.duration(240)
-	.style('opacity', 1);
-	
-//Adding labels to bubbles
+    .transition()
+    .duration(240)
+    .style('opacity', 1);
+
+  //Adding labels to bubbles
   visEnter.append("text")
     .attr("dy", ".3em")
     .style("text-anchor", "middle")
@@ -186,7 +186,7 @@ var updateBubbleChart = function(department, bcl, tip) {
       return d.name;
     });
 
-//Adding toolti[]
+  //Adding toolti[]
   var tip = d3.tip()
     .attr('class', 'd3-tip')
     .offset([-10, 0])
@@ -223,7 +223,7 @@ var svg = d3.select('#vis-container')
   .attr('width', 800)
   //.style('border','1px solid gray'); //to show a border
 
- //Creating bubble chart
+//Creating bubble chart
 var bubble = d3.layout.pack()
   .size([800, 800])
   .value(function(d) {
@@ -231,8 +231,8 @@ var bubble = d3.layout.pack()
   })
   .sort(null)
   .padding(1.5);
-  
- //Creating a D3 tooltip
+
+//Creating a D3 tooltip
 var tip = d3.tip()
   .attr('class', 'd3-tip')
   .offset([-10, 0])
@@ -246,7 +246,7 @@ var nodes = bubble.nodes(prepareData())
     return !d.children;
   }); // filter out the outer bubble
 
- //Adding click events and appending G element
+//Adding click events and appending G element
 var vis = svg.selectAll('circle')
   .data(nodes)
   .enter()
@@ -261,11 +261,11 @@ var vis = svg.selectAll('circle')
   })
 
 vis.on('mouseover', function() {
-		d3.select(this).transition().attr('r', function(d) {
-			return d.bigradius;
-		});
-	});
-  
+  d3.select(this).transition().attr('r', function(d) {
+    return d.bigradius;
+  });
+});
+
 vis.append('circle')
   //.attr("stroke", "gray")
   .attr('r', function(d) {
@@ -278,7 +278,7 @@ vis.append('circle')
     return d.color;
   });
 
- //Creating bubble labels
+//Creating bubble labels
 vis.append("text")
   .attr("dy", ".3em")
   .style("text-anchor", "middle")
