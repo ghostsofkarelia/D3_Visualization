@@ -197,8 +197,9 @@ var updateBubbleChart = function(department, bcl, tip) {
   svg.call(tip); //Binding tip to the svg
 
   visEnter.on('mouseover', tip.show) //Mouse events
-    .on('mouseout', tip.hide)
-}
+    .on('mouseout', ti
+    
+"""""""""""""""""""""""""END OF UPDATE FUNCTION""""""""""""""""""""""""""
 
 //Helper function to format number as money
 var formatNumberAsMoney = function(value) {
