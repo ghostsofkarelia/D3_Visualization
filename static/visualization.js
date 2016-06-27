@@ -13,12 +13,6 @@ var Chart = function() {
    success: function(data) {
     seattleGovData = JSON.parse(data)
    }
-
-    async: false,
-    url: '/getData',
-    success: function(data) {
-      seattleGovData = JSON.parse(data)
-    }
   });
  }
 
@@ -282,89 +276,6 @@ $(function() { //on html page ready ready run the following code
  //Adding text to the citation element
  var $source = $('#citation');
  $source.text("Data retrieved from https://data.seattle.gov/Finance/Expenditures-dollars/frxe-s3us. Click on ARTS or FG for comprehensive results");
-}
-
-//Adding text to the citation element
-var $source = $('#citation');
-$source.text("Data retrieved from https://data.seattle.gov/Finance/Expenditures-dollars/frxe-s3us. Click on ARTS or FG for comprehensive results");
-
-
-//the SVG to add stuff to
-var svg = d3.select('#vis-container')
-  .append('svg')
-  .attr('height', 800) //can adjust size as desired
-  .attr('width', 800)
-  //.style('border','1px solid gray'); //to show a border
-
-//Creating bubble chart
-var bubble = d3.layout.pack()
-  .size([800, 800])
-  .value(function(d) {
-    return d.size;
-  })
-  .sort(null)
-  .padding(1.5);
-
-//Creating a D3 tooltip
-var tip = d3.tip()
-  .attr('class', 'd3-tip')
-  .offset([-10, 0])
-  .html(function(d) {
-    return "<span style='color:black'>" + d.bcl + " has expenditure " + formatNumberAsMoney(d.size) + "</span>";
-  });
-
-//Filter the outer bubble
-var nodes = bubble.nodes(prepareData())
-  .filter(function(d) {
-    return !d.children;
-  }); // filter out the outer bubble
-
-//Adding click events and appending G element
-var vis = svg.selectAll('circle')
-  .data(nodes)
-  .enter()
-  .append("g")
-  .on("click", function(d) {
-    console.log(d);
-    updateBubbleChart(d.name, d.bcl, tip)
-  })
-  .attr("class", "node")
-  .attr('transform', function(d) {
-    return 'translate(' + d.x + ',' + d.y + ')';
-  })
-
-vis.on('mouseover', function() {
-  d3.select(this).transition().attr('r', function(d) {
-    return d.bigradius;
-  });
-});
-
-vis.append('circle')
-  //.attr("stroke", "gray")
-  .attr('r', function(d) {
-    return d.r;
-  })
-  .attr('class', function(d) {
-    return d.className;
-  })
-  .style('fill', function(d) {
-    return d.color;
-  });
-
-//Creating bubble labels
-vis.append("text")
-  .attr("dy", ".3em")
-  .style("text-anchor", "middle")
-  .style("font-size", function(d) {
-    var len = d.name.substring(0, d.r / 3).length;
-    var size = d.r / 3;
-    size *= 5 / len;
-    size += 1;
-    return Math.round(size) + 'px';
-  })
-  .text(function(d) {
-    return d.name;
-  });
 
  //Create chart object
  var chart = new Chart();
