@@ -1,10 +1,10 @@
 import requests
 
-def getGovData():
+def get_gov_data():
 	response = requests.get('https://data.seattle.gov/resource/i2xy-tcyk.json')
 	return response.json()
 	
-def formatJSONData(response):
+def format_JSON_data(response):
 	expenditure={}
 	for item in response:
 		program_list=[]
