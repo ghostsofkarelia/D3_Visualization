@@ -15,6 +15,9 @@ This is a simple visualization created in D3 that shows the proposed expenditure
 ##Installation
 
 1.) Run route_functions.py using command:
+	
 	python route_functions.py
 	
-2.) Go to http://localhost:5000/ 	
+2.) Navigate to the following url: 
+
+	http://localhost:5000/ 	
