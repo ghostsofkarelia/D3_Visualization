@@ -4,7 +4,7 @@ render_template
 )
 import json
 from get_govdata import (get_gov_data,format_JSON_data)
-from __init__ import app
+from __init__ import app, pages
 
 @app.route('/')
 def index():
